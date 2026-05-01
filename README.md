@@ -37,3 +37,5 @@ Este projeto encontra-se em fase conceitual/prototipagem, podendo receber melhor
 
 Aqui estão algumas imagens sobre este projeto!
 ![alt text](image.png)
+
+![alt text](image-1.png)
