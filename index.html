@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Vigilância Sanitária</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/></svg>
+      </div>
+      <h1>Vigilância Sanitária</h1>
+      <p>Acesso ao Sistema</p>
+      <div class="login-error" id="login-error"></div>
+      <div class="form-group">
+        <label>E-mail</label>
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+          <input type="email" id="email-input" placeholder="seu@email.com" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+          <input type="password" id="senha-input" placeholder="Digite sua senha" />
+          <button class="eye-btn" onclick="toggleSenha()">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="checkbox-row">
+        <label><input type="checkbox" id="remember" /> Lembrar-me</label>
+        <a href="#" class="forgot" onclick="showToast('Funcionalidade em desenvolvimento')">Esqueceu a senha?</a>
+      </div>
+      <button class="btn-entrar" onclick="doLogin()">Entrar</button>
+      <div class="login-footer">
+        Não tem acesso? <a href="#" onclick="showToast('Entre em contato com o administrador')">Solicitar cadastro</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="dashboard-screen">
+    <div class="app-layout">
+
+    
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/></svg>
+            </div>
+            <div class="sidebar-title">
+              <h2>Sistema de Vigilância Sanitária</h2>
+              <p>Gestão e Monitoramento</p>
+            </div>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <button class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard')">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </button>
+          <button class="nav-item" id="nav-estabelecimentos" onclick="showPage('estabelecimentos')">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Estabelecimentos
+          </button>
+          <button class="nav-item" id="nav-inspecoes" onclick="showPage('inspecoes')">
+            <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            Inspeções
+          </button>
+          <button class="nav-item" id="nav-denuncias" onclick="showPage('denuncias')">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Denúncias
+          </button>
+          <button class="nav-item" id="nav-relatorios" onclick="showPage('relatorios')">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Relatórios
+          </button>
+        </nav>
+      </aside>
+
+    
+      <div class="main-area">
+        <div class="topbar">
+          <span class="topbar-title" id="topbar-title">Dashboard</span>
+          <div class="topbar-actions">
+            <button onclick="showToast('Notificações: 3 novas')">
+              <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </button>
+            <button class="btn-config" onclick="showPage('configuracoes')">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+              </svg>
+              Configurações
+            </button>
+            <div class="avatar" onclick="doLogout()" title="Sair">VS</div>
+          </div>
+        </div>
+        <div class="content" id="main-content"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-inspecao">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Nova Inspeção</h3>
+        <button onclick="closeModal('modal-inspecao')">✕</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Estabelecimento</label>
+          <select>
+            <option>Restaurante ABC</option>
+            <option>Farmácia Central</option>
+            <option>Supermercado Bom Preço</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Data</label>
+          <input type="date" />
+        </div>
+        <div class="form-field">
+          <label>Inspetor</label>
+          <input type="text" placeholder="Nome do inspetor" />
+        </div>
+        <div class="form-field">
+          <label>Tipo</label>
+          <select>
+            <option>Rotina</option>
+            <option>Especial</option>
+            <option>Emergência</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field" style="margin-top:1rem">
+        <label>Observações</label>
+        <textarea rows="3" placeholder="Observações iniciais..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn-secondary" onclick="closeModal('modal-inspecao')">Cancelar</button>
+        <button class="btn-primary" onclick="salvarInspecao()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-denuncia">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Registrar Denúncia</h3>
+        <button onclick="closeModal('modal-denuncia')">✕</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Estabelecimento</label>
+          <input type="text" placeholder="Nome do estabelecimento" />
+        </div>
+        <div class="form-field">
+          <label>Categoria</label>
+          <select>
+            <option>Higiene</option>
+            <option>Manipulação de Alimentos</option>
+            <option>Infraestrutura</option>
+            <option>Outros</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field" style="margin-top:1rem">
+        <label>Descrição</label>
+        <textarea rows="4" placeholder="Descreva o problema..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn-secondary" onclick="closeModal('modal-denuncia')">Cancelar</button>
+        <button class="btn-primary" onclick="salvarDenuncia()">Registrar</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast"></div>
+ <script src="script.js"></script>
+</body>
+</html>
